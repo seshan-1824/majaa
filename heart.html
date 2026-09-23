@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>For You ❤️</title>
+<style>
+body{margin:0;background:#050507;color:#fff;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:Georgia,serif;overflow:hidden}
+canvas{width:min(90vw,650px);height:auto}.note{color:#ffb6cc;font-size:20px;text-align:center}.back{margin-top:18px;color:#fff;background:#d4144e;padding:12px 30px;border-radius:30px;text-decoration:none}
+</style>
+</head>
+<body>
+<canvas id="c" width="650" height="600"></canvas>
+<div class="note">Made with ❤️</div>
+<a class="back" href="lovee.html">← Back</a>
+<script>
+if(sessionStorage.getItem("unlocked")!=="yes") location.href="index.html";
+const c=document.getElementById("c"),x=c.getContext("2d");
+function heart(t){
+  const px=325+16*Math.pow(Math.sin(t),3);
+  const py=310-(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t))*12;
+  return [px,py];
+}
+let points=[];
+for(let t=0;t<Math.PI*2;t+=.02)points.push(heart(t));
+let i=0;
+function draw(){
+  if(i<points.length){
+    const p=points[i++];
+    if(i===1){x.beginPath();x.moveTo(p[0],p[1]);}
+    else x.lineTo(p[0],p[1]);
+    x.strokeStyle="#ff315f";x.lineWidth=3;x.shadowBlur=15;x.shadowColor="#ff315f";x.stroke();
+    requestAnimationFrame(draw);
+  }else{
+    x.fillStyle="#ff174f";x.shadowBlur=25;x.shadowColor="#ff174f";
+    x.beginPath();points.forEach((p,j)=>j?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1]));x.closePath();x.fill();
+  }
+}
+draw();
+</script>
+</body>
+</html>
